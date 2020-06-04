@@ -1,0 +1,10 @@
+.env
+
+###
+# terraform state files
+###
+*.terraform
+*.terragrunt-cache
+
+# Byte-compiled / optimized / DLL files
+__pycache__/

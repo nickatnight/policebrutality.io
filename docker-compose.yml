@@ -1,0 +1,46 @@
+version: '3'
+
+volumes:
+  base-data:
+  mongodb-data:
+
+services:
+  mongodb:
+    restart: always
+    env_file:
+      - .env
+    build:
+      context: ./mongodb
+      dockerfile: ./Dockerfile
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb-data:/data/db
+
+  backend:
+    restart: always
+    env_file:
+      - .env
+    build:
+      context: ./backend
+      dockerfile: ./Dockerfile
+      args:
+        env: ${ENV}
+        requirements_file: '${ENV}.txt'
+    ports:
+      - '5000:5000'
+    command: bash -c "waitforit -host=mongodb -port=27017 --timeout 30 && gunicorn -b 0.0.0.0:5000 app:app --reload"
+    depends_on:
+      - mongodb
+    environment:
+      - PYTHONUNBUFFERED=0
+    volumes:
+      - base-data:/data
+      - ./backend/:/code
+
+  proxy:
+    image: tivix/docker-nginx:v6
+    ports:
+      - '0.0.0.0:80:80'
+    env_file:
+      - .env
