@@ -13,9 +13,6 @@ settings = importlib.import_module("app.settings.{}".format(os.getenv("ENV", "de
 logger = logging.getLogger(__name__)
 
 
-# UPLOAD_PATH = "/tmp/videos/"
-
-
 def download_video(url: str) -> Union[None, str]:
     """download video
 
