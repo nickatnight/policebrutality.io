@@ -1,0 +1,78 @@
+version: '3.4'
+
+x-django-envs: &django_envs
+  environment:
+    - ENV=staging
+    - MONGODB_USER=staging
+    - MONGODB_PASS=staging!2020
+    - MONGODB_HOST=mongodb
+    - MONGODB_DATABASE=videos
+    - MONGODB_PORT=27017
+    - MONGO_INITDB_ROOT_USERNAME=policebrutality
+    - MONGO_INITDB_ROOT_PASSWORD=policebrutality!2020
+    - MONGO_INITDB_DATABASE=videos
+
+x-default_deploy: &default_deploy
+  deploy:
+    mode: replicated
+    replicas: 1
+    restart_policy:
+      condition: on-failure
+      delay: 20s
+      max_attempts: 6
+      window: 120s
+    update_config:
+      parallelism: 1
+      order: start-first
+
+volumes:
+  data-vol:
+  dbdata-vol:
+
+services:
+
+  mongodb:
+    image: registry.digitalocean.com/docr/policebrutality-mongodb:${GITHUB_SHA}
+    environment:
+    ports:
+      - "27017:27017"
+    labels:
+      dev.policebrutality.container.name: policebrutality-mongodb
+      dev.policebrutality.env: staging
+      dev.policebrutality.project: policebrutality-cloud
+    volumes:
+      - dbdata-vol:/data
+    <<: *django_envs
+    <<: *default_deploy
+
+  proxy:
+    image: tivix/docker-nginx:v6
+    environment:
+      - UPSTREAMS=/:backend:5000
+      - NGINX_SERVER_NAME=staging.policebrutality.io # without this, /admin redirects to https://_/
+      - USE_AUTH=false
+      - USE_HTTPS_REDIR=false
+      - BUFFER_OFF=true
+      - GZIP=true
+    labels:
+      dev.policebrutality.container.name: policebrutality-proxy
+      dev.policebrutality.env: staging
+      dev.policebrutality.project: policebrutality-cloud
+    ports:
+      - '0.0.0.0:80:80'
+    volumes:
+      - data-vol:/data
+    <<: *default_deploy
+
+  backend:
+    image: registry.digitalocean.com/docr/policebrutality-backend:${GITHUB_SHA}
+    environment:
+    labels:
+      com.tivix.container.name: policebrutality-backend
+      com.tivix.env: staging
+      com.tivix.project: policebrutality-cloud
+    <<: *django_envs
+    <<: *default_deploy
+    volumes:
+      - data-vol:/data
+    command: bash -c "gunicorn -b 0.0.0.0:5000 app:app --reload"

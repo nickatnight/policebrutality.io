@@ -1,0 +1,108 @@
+---
+
+name: build, test and deploy
+
+on:
+  push:
+    branches:
+      - develop
+      - master
+
+jobs:
+  linter:
+    runs-on: ubuntu-18.04
+    name: Check python linting
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Start linter
+        run: |
+          docker run --rm -w="/code/backend" -v $(pwd):/code alpine/flake8:3.5.0 .
+
+  build_backend:
+    runs-on: ubuntu-18.04
+    needs: [linter]
+    name: Build backend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_TOKEN }}
+      - name: Build backend
+        env:
+          DOCKER_BUILDKIT: 1
+        run: |
+          docker build -t registry.digitalocean.com/docr/policebrutality-backend:${{ github.sha }} ./backend
+      - name: Push backend image
+        env:
+          DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
+        run: |
+          doctl registry login
+          docker push registry.digitalocean.com/docr/policebrutality-backend:${{ github.sha }}
+
+  build_mongodb:
+    runs-on: ubuntu-18.04
+    needs: [linter]
+    name: Build mongodb
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_TOKEN }}
+      - name: Build backend
+        env:
+          DOCKER_BUILDKIT: 1
+        run: |
+          docker build -t registry.digitalocean.com/docr/policebrutality-mongodb:${{ github.sha }} ./mongodb
+      - name: Push backend image
+        env:
+          DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
+        run: |
+          doctl registry login
+          docker push registry.digitalocean.com/docr/policebrutality-mongodb:${{ github.sha }}
+
+  deploy:
+    runs-on: ubuntu-18.04
+    name: Deploy
+    needs: [build_backend, build_mongodb]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Deploy staging
+        uses: ironhalik/docker-over-ssh-action@v6
+        if: github.ref == 'refs/heads/develop'
+        env:
+          COMPOSE_FILE: ops/docker-compose.staging.yml
+          STACK_NAME: policebrutality-staging
+          DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
+        with:
+          user: ubuntu
+          host: ${{ secrets.STAGING_HOST_IP }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            wget https://github.com/digitalocean/doctl/releases/download/v1.44.0/doctl-1.44.0-linux-amd64.tar.gz
+            tar xf ./doctl-1.44.0-linux-amd64.tar.gz
+            mv ./doctl /usr/local/bin
+            doctl registry login
+            docker stack deploy --compose-file ${COMPOSE_FILE} --with-registry-auth --prune ${STACK_NAME}
+      - name: Deploy prod
+        uses: ironhalik/docker-over-ssh-action@v6
+        if: github.ref == 'refs/heads/master'
+        env:
+          COMPOSE_FILE: ops/docker-compose.prod.yml
+          STACK_NAME: policebrutality-prod
+          DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
+        with:
+          user: ubuntu
+          host: ${{ secrets.PROD_HOST_IP }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            wget https://github.com/digitalocean/doctl/releases/download/v1.44.0/doctl-1.44.0-linux-amd64.tar.gz
+            tar xf ./doctl-1.44.0-linux-amd64.tar.gz
+            mv ./doctl /usr/local/bin
+            doctl registry login
+            docker stack deploy --compose-file ${COMPOSE_FILE} --with-registry-auth --prune ${STACK_NAME}

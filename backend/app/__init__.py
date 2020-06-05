@@ -7,6 +7,8 @@ import mongoengine as mongo
 from app.resources.video import VideoResource
 
 
+VERSION = "v1"
+
 app = falcon.API()
 
 db = mongo.connect(
@@ -17,4 +19,4 @@ db = mongo.connect(
     password=os.getenv("MONGODB_PASS", ""),
 )
 
-app.add_route("/api/videos", VideoResource())
+app.add_route(f"/{VERSION}/videos", VideoResource())
