@@ -39,9 +39,10 @@ a REST api...that's all. All data generated from [here](https://github.com/2020P
 - cron tasks for update
 
 ## Development
-1. `docker-compose up`
-2. visit `localhost/v1/videos` in browser
-3. to generate data, hop into the `backend` shell and run `GitHubAPI()`
+1. create a `.env` file at the root dir: `mv .env_example .env`
+2. `docker-compose up`
+3. visit `localhost/v1/videos` in browser
+4. to generate data, hop into the `backend` shell and run `GitHubAPI()`
     ```
     > docker-compose exec backend bash
     > python
