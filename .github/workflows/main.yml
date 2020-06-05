@@ -93,5 +93,3 @@ jobs:
             mv ./doctl /usr/local/bin
             doctl registry login
             docker stack deploy --compose-file ${COMPOSE_FILE} --with-registry-auth --prune ${STACK_NAME}
-            tail-service-until --service ${STACK_NAME}_backend --commit ${{ github.sha }} --string "Starting gunicorn 19.9.0" --timeout 180
-            wait-for-stack -t 180 ${STACK_NAME}
