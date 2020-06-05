@@ -5,4 +5,4 @@ from app.models.video import Video
 
 class Link(Document):
     video = ReferenceField(Video)
-    link = StringField(max_length=255, required=True, unique=True)
+    link = StringField(max_length=255, required=True, unique=False)
