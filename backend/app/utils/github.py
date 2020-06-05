@@ -1,12 +1,12 @@
-from typing import Dict, List
+from typing import Dict
 
+from app.services.link_service import LinkService
 from app.services.video_service import VideoService
-from app.utils.helpers import RequestAPI, Identifier
+from app.utils.helpers import RequestAPI
 
 
 # Consts
-API_BASE = "https://api.github.com/repos/2020PB/police-brutality/"
-API_REPORTS = f"{API_BASE}contents/reports"
+BULK_API_DATA = "https://raw.githubusercontent.com/2020PB/police-brutality/data_build/all-locations.json"  # noqa
 
 
 class GitHubAPI(RequestAPI):
@@ -16,67 +16,33 @@ class GitHubAPI(RequestAPI):
     def __init__(self):
         super().__init__()
 
-    def get_states_list(self) -> List[Dict]:
-        """get top level data (by state)
+    def get_all_locations_data(self) -> Dict:
+        """fetch json data from repo
 
-        :return:                list of items from github api
+        :return:                dict
         """
         r_json = list()
-        req = self.request(API_REPORTS)
+        req = self.request(BULK_API_DATA)
 
         if req:
             r_json = req.json()
 
         return r_json
 
-    def get_raw_content(self, report_list: List[Dict]) -> None:
-        """fetch the the raw .md content for each state
+    def create_objects_from_data(self, location_data: Dict) -> None:
+        """capture data to mongodb
 
-        :param report_list:     api data form github
-        :return:                None
+        :param location_data:           data from repo
+        :return:
         """
-        for report in report_list:
-            state = report.get("name", "").strip(".md")
-            content = self.request(report.get("download_url")).content
-            self.parse_state_data(content, state)
-
-    def parse_state_data(self, state_content: bytes, state: str) -> None:
-        """iterate .md data line by line, and create object for each viedo link
-
-        :param state_content:       byte string
-        :param state:
-        :return:                    None
-        """
-        split_line = state_content.decode("utf-8").split("\n")
-        data = dict()
-        cp_data = dict()
-        for line in split_line:
-            line_elem = line.split(" ")
-            line_elem = list(filter(None, line_elem))
-            if line_elem:
-                if line_elem[0] == Identifier.CITY:
-                    del cp_data
-                    cp_data = dict()
-                    city = " ".join(line_elem[1:])
-                    data["city"] = city.strip()
-                elif line_elem[0] == Identifier.TITLE:
-                    data["title"] = " ".join(line_elem[1:])
-                elif line_elem[0] == Identifier.LINK and data:
-                    data["link"] = line_elem[1]
-                    data["state"] = state
-                    cp_data = data.copy()
-                    cp_data.pop("link")
-                    if not VideoService.get_video(link=line_elem[1]):
-                        VideoService.create_video(**data)
-                    del data
-                    data = dict()
-                elif line_elem[0] == Identifier.LINK:
-                    cp_data["link"] = line_elem[1]
-                    if not VideoService.get_video(link=line_elem[1]):
-                        VideoService.create_video(**cp_data)
+        data = location_data.get("data")
+        for instance in data:
+            links = instance.pop("links", [])
+            video = VideoService.create_video(**instance)
+            LinkService.create_links(video, links)
 
     def main(self) -> None:
         """main
         """
-        state_list = self.get_states_list()
-        self.get_raw_content(state_list)
+        locations_data = self.get_all_locations_data()
+        self.create_objects_from_data(locations_data)
