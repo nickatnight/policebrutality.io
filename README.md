@@ -11,7 +11,7 @@ a REST api...that's all. All data generated from [here](https://github.com/2020P
 
 ## Usage
 ```
-> curl -XGET http://staging.policebrutality.io/api/videos
+> curl -XGET http://api.policebrutality.io/v1/videos
 {
     "count": 846,
     "data": [
@@ -40,7 +40,7 @@ a REST api...that's all. All data generated from [here](https://github.com/2020P
 
 ## Development
 1. `docker-compose up`
-2. visit `localhost/api/videos` in browser
+2. visit `localhost/v1/videos` in browser
 3. to generate data, hop into the `backend` shell and run `GitHubAPI()`
     ```
     > docker-compose exec backend bash

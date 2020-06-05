@@ -2,9 +2,9 @@ version: '3.4'
 
 x-django-envs: &django_envs
   environment:
-    - ENV=staging
-    - MONGODB_USER=staging
-    - MONGODB_PASS=staging!2020
+    - ENV=prod
+    - MONGODB_USER=georgef
+    - MONGODB_PASS=georgef!2020
     - MONGODB_HOST=mongodb
     - MONGODB_DATABASE=videos
     - MONGODB_PORT=27017
@@ -38,7 +38,7 @@ services:
       - "27017:27017"
     labels:
       dev.policebrutality.container.name: policebrutality-mongodb
-      dev.policebrutality.env: staging
+      dev.policebrutality.env: prod
       dev.policebrutality.project: policebrutality-cloud
     volumes:
       - dbdata-vol:/data
@@ -49,14 +49,14 @@ services:
     image: tivix/docker-nginx:v6
     environment:
       - UPSTREAMS=/:backend:5000
-      - NGINX_SERVER_NAME=staging.policebrutality.io # without this, /admin redirects to https://_/
+      - NGINX_SERVER_NAME=api.policebrutality.io
       - USE_AUTH=false
       - USE_HTTPS_REDIR=false
       - BUFFER_OFF=true
       - GZIP=true
     labels:
       dev.policebrutality.container.name: policebrutality-proxy
-      dev.policebrutality.env: staging
+      dev.policebrutality.env: prod
       dev.policebrutality.project: policebrutality-cloud
     ports:
       - '0.0.0.0:80:80'
@@ -69,7 +69,7 @@ services:
     environment:
     labels:
       com.tivix.container.name: policebrutality-backend
-      com.tivix.env: staging
+      com.tivix.env: prod
       com.tivix.project: policebrutality-cloud
     <<: *django_envs
     <<: *default_deploy
