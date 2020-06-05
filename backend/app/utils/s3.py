@@ -33,7 +33,8 @@ def download_video(url: str) -> Union[None, str]:
     else:
         id_ = info_dict.get("id")
         ext = info_dict.get("ext")
-        if id_ and ext and os.path.exists(f"{settings.UPLOAD_PATH}/{id_}.{ext}"):
+
+        if id_ and ext and os.path.exists(f"{settings.UPLOAD_PATH}{id_}.{ext}"):
             video_title = f"{id_}.{ext}"
 
     return video_title
