@@ -39,7 +39,7 @@ class GitHubAPI(RequestAPI):
         data = location_data.get("data")
         existing_video_names = [v.name for v in VideoService.list_videos()]
 
-        for instance in data:
+        for instance in data[:10]:
             # TODO: need unique id here
             name = instance.get("name")
             if name and name not in existing_video_names:

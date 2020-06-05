@@ -1,7 +1,7 @@
 import falcon
 
-from app.models.link import Link
 from app.models.video import Video
+from app.services.link_service import LinkService
 from app.utils.helpers import format_json_response
 
 
@@ -25,10 +25,9 @@ class VideoResource(object):
                     "name": video.name,
                     "state": video.state,
                     "city": video.city,
-                    "links": [
-                        {link.key: link.link} for link in Link.objects(video=video)
-                    ],
+                    "links": LinkService.create_response_list(video),
                 }
             )
+
         resp.status = falcon.HTTP_200
         resp.media = format_json_response(videos)
