@@ -34,13 +34,13 @@ jobs:
         env:
           DOCKER_BUILDKIT: 1
         run: |
-          docker build -t registry.digitalocean.com/docr/policebrutality-backend:${{ github.sha }} ./backend
+          docker build -t ${{ secrets.REGISTRY }}-backend:${{ github.sha }} ./backend
       - name: Push backend image
         env:
           DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
         run: |
           doctl registry login
-          docker push registry.digitalocean.com/docr/policebrutality-backend:${{ github.sha }}
+          docker push ${{ secrets.REGISTRY }}-backend:${{ github.sha }}
 
   build_mongodb:
     runs-on: ubuntu-18.04
@@ -57,13 +57,13 @@ jobs:
         env:
           DOCKER_BUILDKIT: 1
         run: |
-          docker build -t registry.digitalocean.com/docr/policebrutality-mongodb:${{ github.sha }} ./mongodb
+          docker build -t ${{ secrets.REGISTRY }}-mongodb:${{ github.sha }} ./mongodb
       - name: Push backend image
         env:
           DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
         run: |
           doctl registry login
-          docker push registry.digitalocean.com/docr/policebrutality-mongodb:${{ github.sha }}
+          docker push ${{ secrets.REGISTRY }}-mongodb:${{ github.sha }}
 
   deploy:
     runs-on: ubuntu-18.04
