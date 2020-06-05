@@ -72,10 +72,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Install doctl
-        uses: digitalocean/action-doctl@v2
-        with:
-          token: ${{ secrets.DIGITALOCEAN_TOKEN }}
       - name: Deploy staging
         uses: ironhalik/docker-over-ssh-action@v6
         if: github.ref == 'refs/heads/develop'
@@ -98,11 +94,11 @@ jobs:
         if: github.ref == 'refs/heads/master'
         env:
           COMPOSE_FILE: ops/docker-compose.prod.yml
-          STACK_NAME: policebrutality-staging
+          STACK_NAME: policebrutality-prod
           DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
         with:
           user: ubuntu
-          host: ${{ secrets.STAGING_HOST_IP }}
+          host: ${{ secrets.PROD_HOST_IP }}
           key: ${{ secrets.SSH_KEY }}
           script: |
             wget https://github.com/digitalocean/doctl/releases/download/v1.44.0/doctl-1.44.0-linux-amd64.tar.gz
