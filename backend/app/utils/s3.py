@@ -65,7 +65,7 @@ def upload_to_spaces(file_name: str) -> None:
 
 
 def tmp_folder_clean_up() -> None:
-    """remove downloaded videos frpm /tmp/videos
+    """remove downloaded videos from /tmp/videos
     """
     files = glob.glob(f"{UPLOAD_PATH}*")
     for f in files:
