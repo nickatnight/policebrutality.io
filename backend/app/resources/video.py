@@ -25,7 +25,9 @@ class VideoResource(object):
                     "name": video.name,
                     "state": video.state,
                     "city": video.city,
-                    "links": [link.link for link in Link.objects(video=video)],
+                    "links": [
+                        {link.key: link.link} for link in Link.objects(video=video)
+                    ],
                 }
             )
         resp.status = falcon.HTTP_200

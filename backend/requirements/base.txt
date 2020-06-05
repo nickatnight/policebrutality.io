@@ -1,3 +1,5 @@
+# python
+boto3==1.13.23
 cython==0.29.19
 falcon==2.0.0
 falcon-autocrud==1.0.36
@@ -6,5 +8,9 @@ jsonschema==3.0.1
 python-dateutil==2.8.0
 six==1.12.0
 
+# db
 mongoengine==0.20.0
+
+# misc.
+youtube-dl==2020.5.29
 requests==2.23.0
