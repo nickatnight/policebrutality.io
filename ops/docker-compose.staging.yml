@@ -11,8 +11,6 @@ x-django-envs: &django_envs
     - MONGO_INITDB_ROOT_USERNAME=policebrutality
     - MONGO_INITDB_ROOT_PASSWORD=policebrutality!2020
     - MONGO_INITDB_DATABASE=videos
-    - SPACES_ACCESS_KEY_ID=${SPACES_ACCESS_KEY_ID}
-    - SPACES_SECRET_ACCESS_KEY=${SPACES_SECRET_ACCESS_KEY}
     - SPACES_REGION_NAME=sfo2
     - SPACES_BUCKET_NAME=staging-uploads-policebrutality
 
