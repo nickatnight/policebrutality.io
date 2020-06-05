@@ -11,6 +11,9 @@ from youtube_dl.utils import DownloadError
 logger = logging.getLogger(__name__)
 
 
+UPLOAD_PATH = "/tmp/videos/"
+
+
 def download_video(url: str) -> Union[None, str]:
     """download video
 
@@ -19,7 +22,7 @@ def download_video(url: str) -> Union[None, str]:
     """
     video_title = None
     info_dict = dict()
-    ydl_opts = {"outtmpl": "/tmp/videos/%(id)s.%(ext)s", "noplaylist": True}
+    ydl_opts = {"outtmpl": "{UPLOAD_PATH}%(id)s.%(ext)s", "noplaylist": True}
 
     try:
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
@@ -58,13 +61,13 @@ def upload_to_spaces(file_name: str) -> None:
         aws_secret_access_key=aws_secret_access_key,
     )
 
-    client.upload_file(Bucket=bucket_name, Key=file_name, Filename=f"/code/{file_name}")
+    client.upload_file(Bucket=bucket_name, Key=file_name, Filename=f"{UPLOAD_PATH}{file_name}")
 
 
 def tmp_folder_clean_up() -> None:
     """remove downloaded videos frpm /tmp/videos
     """
-    files = glob.glob("/tmp/videos/*")
+    files = glob.glob(f"{UPLOAD_PATH}*")
     for f in files:
         try:
             os.remove(f)
