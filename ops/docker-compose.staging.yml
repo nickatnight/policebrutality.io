@@ -1,6 +1,6 @@
 version: '3.4'
 
-x-django-envs: &django_envs
+x-falcon-envs: &falcon_envs
   environment:
     - ENV=staging
     - MONGODB_USER=staging
@@ -11,6 +11,10 @@ x-django-envs: &django_envs
     - MONGO_INITDB_ROOT_USERNAME=policebrutality
     - MONGO_INITDB_ROOT_PASSWORD=policebrutality!2020
     - MONGO_INITDB_DATABASE=videos
+    - SPACES_ACCESS_KEY_ID=${SPACES_ACCESS_KEY_ID}
+    - SPACES_SECRET_ACCESS_KEY=${SPACES_SECRET_ACCESS_KEY}
+    - SPACES_REGION_NAME=sfo2
+    - SPACES_BUCKET_NAME=staging-uploads-policebrutality
 
 x-default_deploy: &default_deploy
   deploy:
@@ -42,7 +46,7 @@ services:
       dev.policebrutality.project: policebrutality-cloud
     volumes:
       - dbdata-vol:/data
-    <<: *django_envs
+    <<: *falcon_envs
     <<: *default_deploy
 
   proxy:
@@ -71,7 +75,7 @@ services:
       com.tivix.container.name: policebrutality-backend
       com.tivix.env: staging
       com.tivix.project: policebrutality-cloud
-    <<: *django_envs
+    <<: *falcon_envs
     <<: *default_deploy
     volumes:
       - data-vol:/data

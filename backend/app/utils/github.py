@@ -3,6 +3,7 @@ from typing import Dict
 from app.services.link_service import LinkService
 from app.services.video_service import VideoService
 from app.utils.helpers import RequestAPI
+from app.utils.s3 import tmp_folder_clean_up
 
 
 # Consts
@@ -36,10 +37,17 @@ class GitHubAPI(RequestAPI):
         :return:
         """
         data = location_data.get("data")
+        existing_video_names = [v.name for v in VideoService.list_videos()]
+
         for instance in data:
-            links = instance.pop("links", [])
-            video = VideoService.create_video(**instance)
-            LinkService.create_links(video, links)
+            # TODO: need unique id here
+            name = instance.get("name")
+            if name and name not in existing_video_names:
+                links = instance.pop("links", [])
+                video = VideoService.create_video(**instance)
+                LinkService.create_links(video, links)
+
+                tmp_folder_clean_up()
 
     def main(self) -> None:
         """main

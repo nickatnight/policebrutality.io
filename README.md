@@ -33,10 +33,11 @@ a REST api...that's all. All data generated from [here](https://github.com/2020P
 }
 ```
 
-## TODOs
-- add better filtering
-- geo coding
-- cron tasks for update
+## Deployments
+- deployments are triggered via GitHub actions
+- steps are: test/lint, build, deploy
+- any merge to develop/master will deploy to staging/prod, respectively
+- add tests
 
 ## Development
 1. create a `.env` file at the root dir: `mv .env_example .env`
@@ -49,5 +50,11 @@ a REST api...that's all. All data generated from [here](https://github.com/2020P
     > from app.utils.github import GitHubAPI
     > GitHubAPI().main()
     ```
+
+## TODOs
+- add better filtering
+- geo coding
+- cron tasks for update
+
 ## Acknowledgements
 - Everyone on the intrawebs submitting there time and videos to the [repo](https://github.com/2020PB/police-brutality)/reddit

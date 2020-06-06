@@ -10,7 +10,7 @@ RUN apt-get update
 RUN mkdir -p /usr/share/man/man1 /usr/share/man/man7
 
 RUN apt-get install --upgrade -y bash curl
-RUN apt-get install --upgrade -y g++ gcc make libffi-dev libssl-dev wget
+RUN apt-get install --upgrade -y g++ gcc make libffi-dev libssl-dev wget ffmpeg
 
 RUN apt-get update
 RUN apt-get install --upgrade -y python3 python3-dev python-dev python3-pip
@@ -28,6 +28,7 @@ RUN pip3 install -r /tmp/$REQUIREMENTS_FILE
 ADD . /code/
 
 RUN mkdir -p /data/logs
+RUN mkdir -p /tmp/videos
 
 VOLUME /data
 
