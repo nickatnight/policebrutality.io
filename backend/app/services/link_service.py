@@ -50,7 +50,7 @@ class LinkService(object):
             {
                 "key": link.key,
                 "link": link.link,
-                "spaces_url": f"{settings.SPACES_URL}{link.key}",
+                "spaces_url": f"{settings.SPACES_URL}{link.key}" if link.key else "",
             }
             for link in Link.objects(video=video)
         ]
