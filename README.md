@@ -23,10 +23,16 @@ a REST api...that's all. All data generated from [here](https://github.com/2020P
             "state": "Arkansas",
             "city": "Bentonville",
             "links": [
-                "https://twitter.com/courtenay_roche/status/1267653137969623040",
-                "https://twitter.com/yagirlbrookie09/status/1267647898365427714",
-                "https://www.4029tv.com/article/bentonville-police-deploy-tear-gas-on-protesters/32736629#"
-            ]
+                {
+                    "key": "1267653137969623040.mp4",
+                    "link": "https://twitter.com/courtenay_roche/status/1267653137969623040",
+                    "spaces_url": "https://prod-uploads-policebrutality.sfo2.digitaloceanspaces.com/1267653137969623040.mp4"
+                }, {
+                    "key": "1267647898365427714.mp4",
+                    "link": "https://twitter.com/yagirlbrookie09/status/1267647898365427714",
+                    "spaces_url": "https://prod-uploads-policebrutality.sfo2.digitaloceanspaces.com/1267647898365427714.mp4"
+                },
+            ],
         },
         ...
     ]
@@ -37,7 +43,6 @@ a REST api...that's all. All data generated from [here](https://github.com/2020P
 - deployments are triggered via GitHub actions
 - steps are: test/lint, build, deploy
 - any merge to develop/master will deploy to staging/prod, respectively
-- add tests
 
 ## Development
 1. create a `.env` file at the root dir: `mv .env_example .env`
@@ -55,6 +60,7 @@ a REST api...that's all. All data generated from [here](https://github.com/2020P
 - add better filtering
 - geo coding
 - cron tasks for update
+- add tests
 
 ## Acknowledgements
 - Everyone on the intrawebs submitting there time and videos to the [repo](https://github.com/2020PB/police-brutality)/reddit
