@@ -46,17 +46,11 @@ class LinkService(object):
         :param video:
         :return:                list of serialized data
         """
-        spaces_url = f"{settings.SPACES_URL}/"
-
-        # file paths on local system if dev
-        if settings.IS_DEV:
-            spaces_url = settings.UPLOAD_PATH
-
         data = [
             {
                 "key": link.key,
                 "link": link.link,
-                "spaces_url": f"{spaces_url}{link.key}",
+                "spaces_url": f"{settings.SPACES_URL}{link.key}",
             }
             for link in Link.objects(video=video)
         ]
