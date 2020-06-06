@@ -71,6 +71,7 @@ def upload_to_spaces(file_name: str) -> None:
         Bucket=settings.SPACES_BUCKET_NAME,
         Key=file_name,
         Filename=f"{settings.UPLOAD_PATH}{file_name}",
+        ExtraArgs={"ACL": "public-read"},
     )
 
 
