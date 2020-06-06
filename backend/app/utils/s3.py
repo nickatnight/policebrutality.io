@@ -62,7 +62,7 @@ def upload_to_spaces(file_name: str) -> None:
     client = session.client(
         "s3",
         region_name=settings.SPACES_REGION_NAME,
-        endpoint_url=settings.SPACES_URL,
+        endpoint_url=f"https://{settings.SPACES_REGION_NAME}.digitaloceanspaces.com",
         aws_access_key_id=settings.SPACES_ACCESS_KEY_ID,
         aws_secret_access_key=settings.SPACES_SECRET_ACCESS_KEY,
     )
