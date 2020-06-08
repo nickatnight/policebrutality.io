@@ -37,17 +37,22 @@ class GitHubAPI(RequestAPI):
         :return:
         """
         data = location_data.get("data")
-        existing_video_names = [v.name for v in VideoService.list_videos()]
+        existing_video_pbids = [v.pbid for v in VideoService.list_videos()]
 
         for instance in data:
-            # TODO: need unique id here
-            name = instance.get("name")
-            if name and name not in existing_video_names:
-                links = instance.pop("links", [])
-                video = VideoService.create_video(**instance)
-                LinkService.create_links(video, links)
+            pbid = instance.pop("id", None)
+            if pbid:
+                if pbid not in existing_video_pbids:
+                    links = instance.pop("links", [])
 
-                tmp_folder_clean_up()
+                    instance.update({"pbid": pbid})
+
+                    video = VideoService.create_video(**instance)
+
+                    LinkService.create_links(video, links)
+                    tmp_folder_clean_up()
+                else:
+                    VideoService.update_video(pbid, instance)
 
     def main(self) -> None:
         """main

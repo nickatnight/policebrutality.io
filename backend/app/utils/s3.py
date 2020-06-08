@@ -5,6 +5,7 @@ import os
 from typing import Union
 
 import boto3
+from botocore.errorfactory import ClientError
 import youtube_dl
 from youtube_dl.utils import DownloadError
 
@@ -67,12 +68,16 @@ def upload_to_spaces(file_name: str) -> None:
         aws_secret_access_key=settings.SPACES_SECRET_ACCESS_KEY,
     )
 
-    client.upload_file(
-        Bucket=settings.SPACES_BUCKET_NAME,
-        Key=file_name,
-        Filename=f"{settings.UPLOAD_PATH}{file_name}",
-        ExtraArgs={"ACL": "public-read"},
-    )
+    try:
+        client.head_object(Bucket=settings.SPACES_BUCKET_NAME, Key=file_name)
+        logger.info(f"Found key: {file_name}...skipping spaces upload.")
+    except ClientError:
+        client.upload_file(
+            Bucket=settings.SPACES_BUCKET_NAME,
+            Key=file_name,
+            Filename=f"{settings.UPLOAD_PATH}{file_name}",
+            ExtraArgs={"ACL": "public-read"},
+        )
 
 
 def tmp_folder_clean_up() -> None:

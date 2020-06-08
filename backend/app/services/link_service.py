@@ -14,30 +14,62 @@ class LinkService(object):
     """Service for creating a new Link objects
     """
 
-    @staticmethod
-    def create_links(video: Video, links: List[str]) -> None:
-        """Create a new video
+    # TODO: add collections update
+
+    @classmethod
+    def process_video(cls, link: str) -> str:
+        file_name = download_video(link)
+        empty_key = ""
+
+        if file_name:
+            # save videos to filesystem for local dev
+            if not settings.IS_DEV:
+                upload_to_spaces(file_name)
+
+        return file_name or empty_key
+
+    @classmethod
+    def update_link_key(cls, link: str) -> None:
+        """udpdate Link.key if missing
+
+        :param video:
+        :param link:
+        :return:            nothing
+        """
+        link_obj = Link.objects.get(link=link)
+
+        # TODO: add check for supported sites to avoid wasted calls
+        if not link_obj.key:
+            key = cls.process_video(link_obj.link)
+
+            if key:
+                link_obj.key = key
+                link_obj.save()
+
+    @classmethod
+    def create_link(cls, video: Video, link: str) -> None:
+        link_obj = Link(video=video, link=link)
+        key = cls.process_video(link)
+
+        if key:
+            link_obj.key = key
+
+        link_obj.save()
+
+    @classmethod
+    def create_links(cls, video: Video, links: List[str]) -> None:
+        """Create a new Link objects
 
         :param video:
         :param links:
         :return:
         """
         existing_links = [l.link for l in Link.objects()]  # noqa
-        for link_data in links:
-            if link_data in existing_links:
+        for link_str in links:
+            if link_str in existing_links:
+                cls.update_link_key(link_str)
                 continue
-
-            file_name = download_video(link_data)
-            link_obj = Link(video=video, link=link_data)
-
-            if file_name:
-                if not settings.IS_DEV:
-                    upload_to_spaces(file_name)
-
-                # TODO: need volume for local FEE dev
-                link_obj.key = file_name
-
-            link_obj.save()
+            cls.create_link(video, link_str)
 
     @staticmethod
     def create_response_list(video: Video) -> List[Dict]:
