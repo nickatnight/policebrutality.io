@@ -41,9 +41,9 @@ services:
     ports:
       - "27017:27017"
     labels:
-      dev.policebrutality.container.name: policebrutality-mongodb
-      dev.policebrutality.env: prod
-      dev.policebrutality.project: policebrutality-cloud
+      io.policebrutality.container.name: policebrutality-mongodb
+      io.policebrutality.env: prod
+      io.policebrutality.project: policebrutality-cloud
     volumes:
       - dbdata-vol:/data
     <<: *django_envs
@@ -59,9 +59,9 @@ services:
       - BUFFER_OFF=true
       - GZIP=true
     labels:
-      dev.policebrutality.container.name: policebrutality-proxy
-      dev.policebrutality.env: prod
-      dev.policebrutality.project: policebrutality-cloud
+      io.policebrutality.container.name: policebrutality-proxy
+      io.policebrutality.env: prod
+      io.policebrutality.project: policebrutality-cloud
     ports:
       - '0.0.0.0:80:80'
     volumes:
@@ -72,9 +72,9 @@ services:
     image: registry.digitalocean.com/docr/policebrutality-backend:${GITHUB_SHA}
     environment:
     labels:
-      com.tivix.container.name: policebrutality-backend
-      com.tivix.env: prod
-      com.tivix.project: policebrutality-cloud
+      io.policebrutality.container.name: policebrutality-backend
+      io.policebrutality.env: prod
+      io.policebrutality.project: policebrutality-cloud
     <<: *django_envs
     <<: *default_deploy
     volumes:
