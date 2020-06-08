@@ -1,6 +1,6 @@
 version: '3.4'
 
-x-django-envs: &django_envs
+x-falcon-envs: &falcon_envs
   environment:
     - ENV=prod
     - MONGODB_USER=georgef
@@ -46,7 +46,7 @@ services:
       io.policebrutality.project: policebrutality-cloud
     volumes:
       - dbdata-vol:/data
-    <<: *django_envs
+    <<: *falcon_envs
     <<: *default_deploy
 
   proxy:
@@ -75,7 +75,7 @@ services:
       io.policebrutality.container.name: policebrutality-backend
       io.policebrutality.env: prod
       io.policebrutality.project: policebrutality-cloud
-    <<: *django_envs
+    <<: *falcon_envs
     <<: *default_deploy
     volumes:
       - data-vol:/data
