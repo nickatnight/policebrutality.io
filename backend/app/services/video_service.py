@@ -47,7 +47,7 @@ class VideoService(object):
 
         for link in incoming_links:
             if link in existing_video_links:
-                LinkService.update_link_key(video, link)
+                LinkService.update_link_key(link)
             else:
                 LinkService.create_link(video, link)
 
