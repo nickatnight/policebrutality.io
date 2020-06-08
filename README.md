@@ -16,6 +16,7 @@ a REST api...that's all. All data generated from [here](https://github.com/2020P
     "count": 846,
     "data": [
         {
+            "id": "ar-bentonville-1",
             "edit_at": "https://github.com/2020PB/police-brutality/blob/master/reports/Arkansas.md",
             "date": "2020-06-01",
             "date_text": "June 1st",
