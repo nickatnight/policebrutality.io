@@ -39,7 +39,7 @@ class GitHubAPI(RequestAPI):
         data = location_data.get("data")
         existing_video_pbids = [v.pbid for v in VideoService.list_videos()]
 
-        for instance in data:
+        for instance in data[:10]:
             pbid = instance.pop("id", None)
             if pbid:
                 if pbid not in existing_video_pbids:
