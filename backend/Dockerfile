@@ -5,7 +5,7 @@ LABEL maintainer Nick <nick@night.com>
 ARG env
 ARG requirements_file
 ENV REQUIREMENTS_FILE ${requirements_file:-dev.txt}
-
+ENV PYTHONPATH "${PYTHONPATH}:/code/backend/app"
 RUN apt-get update
 RUN mkdir -p /usr/share/man/man1 /usr/share/man/man7
 
@@ -26,6 +26,7 @@ RUN pip3 install --upgrade pip
 RUN pip3 install -r /tmp/$REQUIREMENTS_FILE
 
 ADD . /code/
+COPY fetch-police-brutality-data /usr/local/bin/
 
 RUN mkdir -p /data/logs
 RUN mkdir -p /tmp/videos

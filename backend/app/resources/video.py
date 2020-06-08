@@ -19,6 +19,7 @@ class VideoResource(object):
         for video in Video.objects():
             videos.append(
                 {
+                    "id": video.pbid,
                     "edit_at": video.edit_at,
                     "date": video.date,
                     "date_text": video.date_text,

@@ -1,6 +1,9 @@
 from typing import List
 
+from app.models.link import Link
 from app.models.video import Video
+from app.services.link_service import LinkService
+from app.utils.s3 import tmp_folder_clean_up
 
 
 class VideoService(object):
@@ -34,3 +37,18 @@ class VideoService(object):
         :param link:
         """
         return Video.objects(link=link)
+
+    @staticmethod
+    def update_video(pbid, data):
+        video = Video.objects.get(pbid=pbid)
+        incoming_links = data.pop("links", [])
+        video.modify(**data)
+        existing_video_links = [l.link for l in Link.objects(video=video)]  # noqa
+
+        for link in incoming_links:
+            if link in existing_video_links:
+                LinkService.update_link_key(video, link)
+            else:
+                LinkService.create_link(video, link)
+
+            tmp_folder_clean_up()
