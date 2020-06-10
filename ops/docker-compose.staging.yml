@@ -36,7 +36,7 @@ volumes:
 services:
 
   mongodb:
-    image: registry.digitalocean.com/docr/policebrutality-mongodb:${GITHUB_SHA}
+    image: ${REGISTRY}-mongodb:${GITHUB_SHA}
     environment:
     ports:
       - "27017:27017"
@@ -45,7 +45,7 @@ services:
       io.policebrutality.env: staging
       io.policebrutality.project: policebrutality-cloud
     volumes:
-      - dbdata-vol:/data
+      - dbdata-vol:/data/db
     <<: *falcon_envs
     <<: *default_deploy
 
@@ -69,7 +69,7 @@ services:
     <<: *default_deploy
 
   backend:
-    image: registry.digitalocean.com/docr/policebrutality-backend:${GITHUB_SHA}
+    image: ${REGISTRY}-backend:${GITHUB_SHA}
     environment:
     labels:
       io.policebrutality.container.name: policebrutality-backend
@@ -79,4 +79,4 @@ services:
     <<: *default_deploy
     volumes:
       - data-vol:/data
-    command: bash -c "gunicorn -b 0.0.0.0:5000 app:app --reload"
+    command: bash -c "gunicorn -c gunicorn_config.py app:app"

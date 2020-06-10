@@ -81,6 +81,7 @@ jobs:
           DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
           SPACES_ACCESS_KEY_ID: ${{ secrets.SPACES_ACCESS_KEY_ID }}
           SPACES_SECRET_ACCESS_KEY: ${{ secrets.SPACES_SECRET_ACCESS_KEY }}
+          REGISTRY: ${{ secrets.REGISTRY }}
         with:
           user: ubuntu
           host: ${{ secrets.STAGING_HOST_IP }}
@@ -100,6 +101,7 @@ jobs:
           DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
           SPACES_ACCESS_KEY_ID: ${{ secrets.SPACES_ACCESS_KEY_ID }}
           SPACES_SECRET_ACCESS_KEY: ${{ secrets.SPACES_SECRET_ACCESS_KEY }}
+          REGISTRY: ${{ secrets.REGISTRY }}
         with:
           user: ubuntu
           host: ${{ secrets.PROD_HOST_IP }}
