@@ -5,11 +5,11 @@ LABEL maintainer Nick <nick@night.com>
 ARG env
 ARG requirements_file
 ENV REQUIREMENTS_FILE ${requirements_file:-dev.txt}
-ENV PYTHONPATH "${PYTHONPATH}:/code/backend/app"
+ENV PYTHONPATH "${PYTHONPATH}:/code/backend/app:/code"
 RUN apt-get update
 RUN mkdir -p /usr/share/man/man1 /usr/share/man/man7
 
-RUN apt-get install --upgrade -y bash curl
+RUN apt-get install --upgrade -y bash curl cron
 RUN apt-get install --upgrade -y g++ gcc make libffi-dev libssl-dev wget ffmpeg
 
 RUN apt-get update
@@ -36,3 +36,5 @@ VOLUME /data
 EXPOSE 5000
 
 WORKDIR /code/
+
+ENTRYPOINT ["./entrypoint.sh"]
