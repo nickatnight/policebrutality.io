@@ -2,6 +2,8 @@
 
 a REST api...that's all. All data generated from [here](https://github.com/2020PB/police-brutality)
 
+Prod: ![master](https://github.com/nickatnight/policebrutality.io/workflows/build,%20test%20and%20deploy/badge.svg?branch=master)
+
 ## Stack
 1. [Falcon](https://falcon.readthedocs.io/en/stable/) | backend api
 2. [MongoDB](https://www.mongodb.com/) | data storage
