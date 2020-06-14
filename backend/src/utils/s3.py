@@ -10,7 +10,7 @@ import youtube_dl
 from youtube_dl.utils import DownloadError
 
 
-settings = importlib.import_module("app.settings.{}".format(os.getenv("ENV", "dev")))
+settings = importlib.import_module("src.settings.{}".format(os.getenv("ENV", "dev")))
 logger = logging.getLogger(__name__)
 
 

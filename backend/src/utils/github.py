@@ -1,9 +1,9 @@
 from typing import Dict
 
-from app.services.link_service import LinkService
-from app.services.video_service import VideoService
-from app.utils.helpers import RequestAPI
-from app.utils.s3 import tmp_folder_clean_up
+from src.services.link_service import LinkService
+from src.services.video_service import VideoService
+from src.utils.helpers import RequestAPI
+from src.utils.s3 import tmp_folder_clean_up
 
 
 # Consts

@@ -2,12 +2,12 @@ import importlib
 import os
 from typing import List, Dict
 
-from app.models.link import Link
-from app.models.video import Video
-from app.utils.s3 import download_video, upload_to_spaces
+from src.models.link import Link
+from src.models.video import Video
+from src.utils.s3 import download_video, upload_to_spaces
 
 
-settings = importlib.import_module("app.settings.{}".format(os.getenv("ENV", "dev")))
+settings = importlib.import_module("src.settings.{}".format(os.getenv("ENV", "dev")))
 
 
 class LinkService(object):

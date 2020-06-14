@@ -55,7 +55,7 @@ Prod: ![master](https://github.com/nickatnight/policebrutality.io/workflows/buil
     ```
     > docker-compose exec backend bash
     > python
-    > from app.utils.github import GitHubAPI
+    > from src.utils.github import GitHubAPI
     > GitHubAPI().main()
     ```
 

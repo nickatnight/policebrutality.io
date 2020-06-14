@@ -29,7 +29,7 @@ services:
         requirements_file: '${ENV}.txt'
     ports:
       - '5000:5000'
-    command: bash -c "waitforit -host=mongodb -port=27017 --timeout 30 && gunicorn -c gunicorn_config.py app:app --reload"
+    command: bash -c "waitforit -host=mongodb -port=27017 --timeout 30 && gunicorn -c gunicorn_config.py 'src.app:run()' --reload"
     depends_on:
       - mongodb
     environment:

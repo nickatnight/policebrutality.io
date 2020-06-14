@@ -5,7 +5,7 @@ LABEL maintainer Nick <nick@night.com>
 ARG env
 ARG requirements_file
 ENV REQUIREMENTS_FILE ${requirements_file:-dev.txt}
-ENV PYTHONPATH "${PYTHONPATH}:/code/backend/app"
+ENV PYTHONPATH "${PYTHONPATH}:/code/backend/src"
 RUN apt-get update
 RUN mkdir -p /usr/share/man/man1 /usr/share/man/man7
 
