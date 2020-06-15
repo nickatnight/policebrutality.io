@@ -26,5 +26,5 @@ class HelpersTestCase(BaseTestCase):
         """test RequestAPI returns 200
         """
         api = RequestAPI()
-        resp = api.request("http://backend:5000/v1/ping")
+        resp = api.request("https://google.com")
         self.assertEqual(resp.status_code, 200)
