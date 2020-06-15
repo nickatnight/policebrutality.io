@@ -2,3 +2,5 @@
 
 black==19.10b0
 flake8==3.8.2
+mongomock==3.19.0
+coverage==5.1

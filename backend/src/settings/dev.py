@@ -1,4 +1,4 @@
-from app.settings.base import *  # noqa
+from src.settings.base import *  # noqa
 
 
 IS_DEV = True

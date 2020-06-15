@@ -3,10 +3,10 @@ import os
 
 from mongoengine import Document, StringField, ReferenceField
 
-from app.models.video import Video
+from src.models.video import Video
 
 
-settings = importlib.import_module("app.settings.{}".format(os.getenv("ENV", "dev")))
+settings = importlib.import_module("src.settings.{}".format(os.getenv("ENV", "dev")))
 
 
 class Link(Document):

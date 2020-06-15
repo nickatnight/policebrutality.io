@@ -1,11 +1,11 @@
 import falcon
 
-from app.models.video import Video
-from app.services.link_service import LinkService
-from app.utils.helpers import format_json_response
+from src.models.video import Video
+from src.services.link_service import LinkService
+from src.utils.helpers import format_json_response
 
 
-class VideoResource(object):
+class VideosAPI(object):
     def on_get(self, req: falcon.Request, resp: falcon.Request) -> falcon.Request:
         """get list of Video objects
 

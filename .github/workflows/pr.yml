@@ -1,0 +1,94 @@
+---
+
+name: pull request
+
+on:
+  pull_request:
+    branches:
+      - develop
+      - master
+
+jobs:
+  linter:
+    runs-on: ubuntu-18.04
+    name: Check python linting
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Start linter
+        run: |
+          docker run --rm -w="/code/backend" -v $(pwd):/code alpine/flake8:3.5.0 .
+
+  build_backend:
+    runs-on: ubuntu-18.04
+    needs: [linter]
+    name: Build backend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_TOKEN }}
+      - name: Build backend
+        env:
+          DOCKER_BUILDKIT: 1
+        run: |
+          docker build -t ${{ secrets.REGISTRY }}-backend:${{ github.sha }} ./backend
+      - name: Push backend image
+        env:
+          DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
+        run: |
+          doctl registry login
+          docker push ${{ secrets.REGISTRY }}-backend:${{ github.sha }}
+
+  build_mongodb:
+    runs-on: ubuntu-18.04
+    needs: [linter]
+    name: Build mongodb
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_TOKEN }}
+      - name: Build backend
+        env:
+          DOCKER_BUILDKIT: 1
+        run: |
+          docker build -t ${{ secrets.REGISTRY }}-mongodb:${{ github.sha }} ./mongodb
+      - name: Push backend image
+        env:
+          DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
+        run: |
+          doctl registry login
+          docker push ${{ secrets.REGISTRY }}-mongodb:${{ github.sha }}
+
+  unit_tests:
+    runs-on: ubuntu-18.04
+    needs: [build_backend, build_mongodb]
+    name: Run unit tests
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_TOKEN }}
+      - name: Run unit tests
+        env:
+          REGISTRY: ${{ secrets.REGISTRY }}
+          DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
+        run: |
+          doctl registry login
+          docker-compose -f ops/docker-compose.test.yml up --exit-code-from backend
+      - name: Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          file: /data/coverage.xml
+          flags: unittests
+      - name: Clean-up
+        if: always()
+        run: |
+          docker-compose -f ops/docker-compose.test.yml down -v

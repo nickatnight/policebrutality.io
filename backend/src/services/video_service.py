@@ -1,9 +1,9 @@
 from typing import List
 
-from app.models.link import Link
-from app.models.video import Video
-from app.services.link_service import LinkService
-from app.utils.s3 import tmp_folder_clean_up
+from src.models.link import Link
+from src.models.video import Video
+from src.services.link_service import LinkService
+from src.utils.s3 import tmp_folder_clean_up
 
 
 class VideoService(object):

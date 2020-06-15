@@ -79,4 +79,4 @@ services:
     <<: *default_deploy
     volumes:
       - data-vol:/data
-    command: bash -c "gunicorn -c gunicorn_config.py app:app"
+    command: bash -c "gunicorn -c gunicorn_config.py 'src.app:run()'"
