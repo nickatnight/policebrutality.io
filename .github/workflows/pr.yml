@@ -72,11 +72,22 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_TOKEN }}
       - name: Run unit tests
         env:
           REGISTRY: ${{ secrets.REGISTRY }}
+          DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
         run: |
+          doctl registry login
           docker-compose -f ops/docker-compose.test.yml up --exit-code-from backend
+      - name: Coveralls
+        if: success()
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Clean-up
         if: always()
         run: |
