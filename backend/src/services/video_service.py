@@ -25,13 +25,6 @@ class VideoService(object):
         return Video.objects()
 
     @staticmethod
-    def delete_video(video_id: int) -> None:
-        """Delete the video
-        :param video_id:
-        """
-        Video.objects(id=video_id).delete()
-
-    @staticmethod
     def get_video(link: str) -> Video:
         """Get video by link
         :param link:
