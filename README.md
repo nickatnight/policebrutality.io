@@ -1,10 +1,9 @@
 # :rotating_light: policebrutality.io
 
-<center>
-
-![master](https://github.com/nickatnight/policebrutality.io/workflows/build,%20test%20and%20deploy/badge.svg?branch=master)
-[![codecov](https://codecov.io/gh/nickatnight/policebrutality.io/branch/master/graph/badge.svg)](https://codecov.io/gh/nickatnight/policebrutality.io)
-</center>
+<p align="center">
+<a href="https://github.com/nickatnight/policebrutality.io"><img alt="Build Status" src="https://github.com/nickatnight/policebrutality.io/workflows/build,%20test%20and%20deploy/badge.svg?branch=master"></a>
+<a href="https://codecov.io/gh/nickatnight/policebrutality.io"><img alt="Actions Status" src="https://codecov.io/gh/nickatnight/policebrutality.io/branch/master/graph/badge.svg"></a>
+</p>
 
 a REST api...that's all. All data generated from [here](https://github.com/2020PB/police-brutality)
 
