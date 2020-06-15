@@ -3,7 +3,7 @@ import falcon
 from src.tests.utils import BaseTestCase
 
 
-class ResourceTestCase(BaseTestCase):
+class APITestCase(BaseTestCase):
     def test_ping_ok(self):
         """test health edpoint returns 200 when available
         """

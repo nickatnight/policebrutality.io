@@ -17,7 +17,7 @@ services:
       - MONGODB_DATABASE=testvideos
       - MONGODB_PORT=27017
     volumes:
-      -./backend:/code  # to access coverage.xml
+      - ./backend:/code  # to access coverage.xml
 
   db:
     image: ${REGISTRY}-mongodb:${GITHUB_SHA}
