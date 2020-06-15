@@ -6,6 +6,7 @@ services:
   backend:
     image: ${REGISTRY}-backend:${GITHUB_SHA}
     command: bash -c "
+      ls -la &&
       coverage run -m unittest discover &&
       coverage report &&
       coverage xml"
