@@ -83,11 +83,14 @@ jobs:
         run: |
           doctl registry login
           docker-compose -f ops/docker-compose.test.yml up --exit-code-from backend
-      - name: Coveralls
-        if: success()
-        uses: coverallsapp/github-action@master
+      - name: Codecov
+      - uses: codecov/codecov-action@v1
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          # token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+          file: ./coverage.xml # optional
+          flags: unittests # optional
+          # name: codecov-umbrella # optional
+          # fail_ci_if_error: true # optional (default = false)
       - name: Clean-up
         if: always()
         run: |

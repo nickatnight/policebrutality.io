@@ -11,4 +11,5 @@ __pycache__/
 .pytest*
 
 .coverage
+coverage.xml
 htmlcov/
