@@ -1,9 +1,9 @@
 ---
 
-name: build, test and deploy
+name: pull request
 
 on:
-  push:
+  pull_request:
     branches:
       - develop
       - master
@@ -92,51 +92,3 @@ jobs:
         if: always()
         run: |
           docker-compose -f ops/docker-compose.test.yml down -v
-
-  deploy:
-    runs-on: ubuntu-18.04
-    name: Deploy
-    needs: [build_backend, build_mongodb]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Deploy staging
-        uses: ironhalik/docker-over-ssh-action@v6
-        if: github.ref == 'refs/heads/develop'
-        env:
-          COMPOSE_FILE: ops/docker-compose.staging.yml
-          STACK_NAME: policebrutality-staging
-          DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
-          SPACES_ACCESS_KEY_ID: ${{ secrets.SPACES_ACCESS_KEY_ID }}
-          SPACES_SECRET_ACCESS_KEY: ${{ secrets.SPACES_SECRET_ACCESS_KEY }}
-          REGISTRY: ${{ secrets.REGISTRY }}
-        with:
-          user: ubuntu
-          host: ${{ secrets.STAGING_HOST_IP }}
-          key: ${{ secrets.SSH_KEY }}
-          script: |
-            wget https://github.com/digitalocean/doctl/releases/download/v1.44.0/doctl-1.44.0-linux-amd64.tar.gz
-            tar xf ./doctl-1.44.0-linux-amd64.tar.gz
-            mv ./doctl /usr/local/bin
-            doctl registry login
-            docker stack deploy --compose-file ${COMPOSE_FILE} --with-registry-auth --prune ${STACK_NAME}
-      - name: Deploy prod
-        uses: ironhalik/docker-over-ssh-action@v6
-        if: github.ref == 'refs/heads/master'
-        env:
-          COMPOSE_FILE: ops/docker-compose.prod.yml
-          STACK_NAME: policebrutality-prod
-          DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
-          SPACES_ACCESS_KEY_ID: ${{ secrets.SPACES_ACCESS_KEY_ID }}
-          SPACES_SECRET_ACCESS_KEY: ${{ secrets.SPACES_SECRET_ACCESS_KEY }}
-          REGISTRY: ${{ secrets.REGISTRY }}
-        with:
-          user: ubuntu
-          host: ${{ secrets.PROD_HOST_IP }}
-          key: ${{ secrets.SSH_KEY }}
-          script: |
-            wget https://github.com/digitalocean/doctl/releases/download/v1.44.0/doctl-1.44.0-linux-amd64.tar.gz
-            tar xf ./doctl-1.44.0-linux-amd64.tar.gz
-            mv ./doctl /usr/local/bin
-            doctl registry login
-            docker stack deploy --compose-file ${COMPOSE_FILE} --with-registry-auth --prune ${STACK_NAME}

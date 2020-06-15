@@ -1,7 +1,7 @@
 import falcon
 
 
-class Ping(object):
+class PingAPI(object):
     """
     Is our service alive?
 

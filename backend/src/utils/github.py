@@ -1,9 +1,9 @@
 from typing import Dict
 
-from app.services.link_service import LinkService
-from app.services.video_service import VideoService
-from app.utils.helpers import RequestAPI
-from app.utils.s3 import tmp_folder_clean_up
+from src.services.link_service import LinkService
+from src.services.video_service import VideoService
+from src.utils.helpers import RequestAPI
+from src.utils.s3 import tmp_folder_clean_up
 
 
 # Consts
@@ -22,7 +22,7 @@ class GitHubAPI(RequestAPI):
 
         :return:                dict
         """
-        r_json = list()
+        r_json = dict()
         req = self.request(BULK_API_DATA)
 
         if req:
@@ -36,7 +36,7 @@ class GitHubAPI(RequestAPI):
         :param location_data:           data from repo
         :return:
         """
-        data = location_data.get("data")
+        data = location_data.get("data", [])
         existing_video_pbids = [v.pbid for v in VideoService.list_videos()]
 
         for instance in data:

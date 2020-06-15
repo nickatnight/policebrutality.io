@@ -28,18 +28,6 @@ def format_json_response(data: List[Dict]) -> Dict:
     return payload
 
 
-class Identifier:
-    """line identifier
-    """
-
-    CITY = "##"
-    TITLE = "###"
-    LINK = "*"
-
-    def __init__(self) -> None:
-        raise NotImplementedError
-
-
 class LogHandler(object):
     """base log handler for all external api calls which sets log by class name
     """
@@ -57,7 +45,7 @@ class RequestAPI(LogHandler):
 
     def request(
         self, url: str, method: str = "get", data: Dict = None, **kwargs: int
-    ) -> Union[None, requests.Request]:
+    ) -> Union[None, requests.Response]:
         """send request
 
         :param url:             url

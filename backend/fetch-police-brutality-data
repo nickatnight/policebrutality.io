@@ -2,7 +2,7 @@
 
 
 if __name__ == "__main__":
-    from app.utils.github import GitHubAPI
+    from src.utils.github import GitHubAPI
 
     handler = GitHubAPI()
     handler.main()

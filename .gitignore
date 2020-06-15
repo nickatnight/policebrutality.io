@@ -8,3 +8,8 @@
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
+.pytest*
+
+.coverage
+coverage.xml
+htmlcov/
