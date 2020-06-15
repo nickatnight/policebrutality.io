@@ -10,7 +10,7 @@ services:
       ls -la &&
       coverage run -m unittest discover &&
       coverage report &&
-      coverage xml"
+      coverage xml -o /data/coverage.xml"
     environment:
       - ENV=test
       - MONGODB_USER=test
@@ -18,8 +18,8 @@ services:
       - MONGODB_HOST=mongodb
       - MONGODB_DATABASE=testvideos
       - MONGODB_PORT=27017
-    # volumes:
-    #   - ./backend:/code  # to access coverage.xml
+    volumes:
+      - /data:/data  # to access coverage.xml
 
   db:
     image: ${REGISTRY}-mongodb:${GITHUB_SHA}
