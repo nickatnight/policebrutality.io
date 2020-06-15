@@ -79,11 +79,7 @@ class LinkService(object):
         :return:                list of serialized data
         """
         data = [
-            {
-                "key": link.key,
-                "link": link.link,
-                "spaces_url": f"{settings.SPACES_URL}{link.key}" if link.key else "",
-            }
+            {"key": link.key, "link": link.link, "spaces_url": link.get_url(),}
             for link in Link.objects(video=video)
         ]
 

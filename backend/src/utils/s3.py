@@ -22,7 +22,11 @@ def download_video(url: str) -> Union[None, str]:
     """
     video_title = None
     info_dict = dict()
-    ydl_opts = {"outtmpl": f"{settings.UPLOAD_PATH}%(id)s.%(ext)s", "noplaylist": True}
+    ydl_opts = {
+        "outtmpl": f"{settings.UPLOAD_PATH}%(id)s.%(ext)s",
+        "noplaylist": True,
+        "quiet": True,
+    }
 
     try:
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:

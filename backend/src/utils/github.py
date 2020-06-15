@@ -22,7 +22,7 @@ class GitHubAPI(RequestAPI):
 
         :return:                dict
         """
-        r_json = list()
+        r_json = dict()
         req = self.request(BULK_API_DATA)
 
         if req:
@@ -36,7 +36,7 @@ class GitHubAPI(RequestAPI):
         :param location_data:           data from repo
         :return:
         """
-        data = location_data.get("data")
+        data = location_data.get("data", [])
         existing_video_pbids = [v.pbid for v in VideoService.list_videos()]
 
         for instance in data:
