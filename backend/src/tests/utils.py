@@ -1,15 +1,7 @@
-import falcon
 from falcon import testing
 from mongoengine import connect, disconnect
-# import pytest
 
 from src import app
-# from src import settings
-
-
-# @pytest.fixture
-# def client():
-#     return testing.TestClient(app)
 
 
 class BaseTestCase(testing.TestCase):
@@ -19,7 +11,7 @@ class BaseTestCase(testing.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        connect('mongoenginetest', host='mongomock://mongodb:27017', alias='default')
+        connect("mongoenginetest", host="mongomock://mongodb:27017", alias="default")
 
     @classmethod
     def tearDownClass(cls):

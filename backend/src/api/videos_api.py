@@ -6,7 +6,6 @@ from src.utils.helpers import format_json_response
 
 
 class VideosAPI(object):
-
     def on_get(self, req: falcon.Request, resp: falcon.Request) -> falcon.Request:
         """get list of Video objects
 
