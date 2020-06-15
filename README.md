@@ -3,9 +3,10 @@
 <p align="center">
 <a href="https://github.com/nickatnight/policebrutality.io"><img alt="Build Status" src="https://github.com/nickatnight/policebrutality.io/workflows/build,%20test%20and%20deploy/badge.svg?branch=master"></a>
 <a href="https://codecov.io/gh/nickatnight/policebrutality.io"><img alt="Actions Status" src="https://codecov.io/gh/nickatnight/policebrutality.io/branch/master/graph/badge.svg"></a>
+<a href="https://github.com/nickatnight/policebrutality.io/releases"><img alt="Actions Status" src="https://img.shields.io/github/v/release/nickatnight/policebrutality.io"></a>
 </p>
 
-a REST api...that's all. All data generated from [here](https://github.com/2020PB/police-brutality)
+REST api...that's all. All data generated from [here](https://github.com/2020PB/police-brutality)
 
 ## Stack
 1. [Falcon](https://falcon.readthedocs.io/en/stable/) | backend api
