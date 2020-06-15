@@ -1,8 +1,12 @@
 # :rotating_light: policebrutality.io
 
-a REST api...that's all. All data generated from [here](https://github.com/2020PB/police-brutality)
+<center>
 
-Prod: ![master](https://github.com/nickatnight/policebrutality.io/workflows/build,%20test%20and%20deploy/badge.svg?branch=master)
+![master](https://github.com/nickatnight/policebrutality.io/workflows/build,%20test%20and%20deploy/badge.svg?branch=master)
+[![codecov](https://codecov.io/gh/nickatnight/policebrutality.io/branch/master/graph/badge.svg)](https://codecov.io/gh/nickatnight/policebrutality.io)
+</center>
+
+a REST api...that's all. All data generated from [here](https://github.com/2020PB/police-brutality)
 
 ## Stack
 1. [Falcon](https://falcon.readthedocs.io/en/stable/) | backend api

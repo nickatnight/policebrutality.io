@@ -7,6 +7,7 @@ services:
     image: ${REGISTRY}-backend:${GITHUB_SHA}
     command: bash -c "
       pwd &&
+      ls -la &&
       coverage run -m unittest discover &&
       coverage report &&
       coverage xml"
@@ -17,8 +18,8 @@ services:
       - MONGODB_HOST=mongodb
       - MONGODB_DATABASE=testvideos
       - MONGODB_PORT=27017
-    volumes:
-      - ./backend:/code  # to access coverage.xml
+    # volumes:
+    #   - ./backend:/code  # to access coverage.xml
 
   db:
     image: ${REGISTRY}-mongodb:${GITHUB_SHA}
