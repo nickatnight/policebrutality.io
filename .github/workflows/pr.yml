@@ -84,7 +84,7 @@ jobs:
           doctl registry login
           docker-compose -f ops/docker-compose.test.yml up --exit-code-from backend
       - name: Codecov
-      - uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v1
         with:
           # token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
           file: ./coverage.xml # optional
