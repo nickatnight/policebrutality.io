@@ -16,7 +16,7 @@ services:
       - MONGODB_HOST=mongodb
       - MONGODB_DATABASE=testvideos
       - MONGODB_PORT=27017
-    volume:
+    volumes:
       -./backend:/code  # to access coverage.xml
 
   db:
