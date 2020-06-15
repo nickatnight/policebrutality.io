@@ -6,7 +6,7 @@
 <a href="https://github.com/nickatnight/policebrutality.io/releases"><img alt="Actions Status" src="https://img.shields.io/github/v/release/nickatnight/policebrutality.io"></a>
 </p>
 
-REST api...that's all. All data generated from [here](https://github.com/2020PB/police-brutality)
+a REST api...that's all. All data generated from [here](https://github.com/2020PB/police-brutality)
 
 ## Stack
 1. [Falcon](https://falcon.readthedocs.io/en/stable/) | backend api
