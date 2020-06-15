@@ -96,7 +96,7 @@ jobs:
   deploy:
     runs-on: ubuntu-18.04
     name: Deploy
-    needs: [build_backend, build_mongodb]
+    needs: [unit_tests]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
