@@ -73,6 +73,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Run unit tests
+        env:
+          REGISTRY: ${{ secrets.REGISTRY }}
         run: |
           docker-compose -f ops/docker-compose.test.yml up --exit-code-from backend
       - name: Clean-up
