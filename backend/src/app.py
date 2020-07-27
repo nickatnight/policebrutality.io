@@ -11,7 +11,7 @@ from src.api.health_api import PingAPI
 
 settings = importlib.import_module("src.settings.{}".format(os.getenv("ENV", "dev")))
 
-VERSION = "v1"
+VERSION = "v2"
 
 
 def initialize() -> falcon.API:

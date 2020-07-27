@@ -1,4 +1,6 @@
-from mongoengine import Document, StringField
+from mongoengine import Document, StringField, ListField, ReferenceField
+
+from src.models.tag import Tag
 
 
 class Video(Document):
@@ -9,3 +11,5 @@ class Video(Document):
     name = StringField(max_length=255, required=False)
     state = StringField(max_length=200, required=False)
     city = StringField(max_length=200, required=False)
+    description = StringField(required=False)
+    tags = ListField(ReferenceField(Tag))

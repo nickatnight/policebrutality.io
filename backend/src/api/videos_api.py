@@ -2,6 +2,7 @@ import falcon
 
 from src.models.video import Video
 from src.services.link_service import LinkService
+from src.services.tag_service import TagService
 from src.utils.helpers import format_json_response
 
 
@@ -26,6 +27,8 @@ class VideosAPI(object):
                     "name": video.name,
                     "state": video.state,
                     "city": video.city,
+                    "description": video.description,
+                    "tags": TagService.create_response_list(video),
                     "links": LinkService.create_response_list(video),
                 }
             )

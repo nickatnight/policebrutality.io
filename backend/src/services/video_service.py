@@ -3,6 +3,7 @@ from typing import List
 from src.models.link import Link
 from src.models.video import Video
 from src.services.link_service import LinkService
+from src.services.tag_service import TagService
 from src.utils.s3 import tmp_folder_clean_up
 
 
@@ -14,7 +15,9 @@ class VideoService(object):
     def create_video(**kwargs: int) -> Video:
         """Create a new video
         """
-        video = Video(**kwargs).save()
+        tags_from_data = kwargs.pop("tags", [])
+        tags = TagService.get_tags_from_list(tags_from_data)
+        video = Video(tags=tags, **kwargs).save()
         return video
 
     @staticmethod
@@ -35,7 +38,10 @@ class VideoService(object):
     def update_video(pbid, data):
         video = Video.objects.get(pbid=pbid)
         incoming_links = data.pop("links", [])
-        video.modify(**data)
+        incoming_tags = data.pop("tags", [])
+        tags = TagService.get_tags_from_list(incoming_tags)
+
+        video.modify(tags=tags, **data)
         existing_video_links = [l.link for l in Link.objects(video=video)]  # noqa
 
         for link in incoming_links:

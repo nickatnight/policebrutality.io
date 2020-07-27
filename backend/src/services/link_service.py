@@ -29,14 +29,14 @@ class LinkService(object):
         return file_name or empty_key
 
     @classmethod
-    def update_link_key(cls, link: str) -> None:
+    def update_link_key(cls, link: Dict) -> None:
         """udpdate Link.key if missing
 
         :param video:
         :param link:
         :return:            nothing
         """
-        link_obj = Link.objects.get(link=link)
+        link_obj = Link.objects.get(link=link.get("url"))
 
         # TODO: add check for supported sites to avoid wasted calls
         if not link_obj.key:
@@ -47,9 +47,18 @@ class LinkService(object):
                 link_obj.save()
 
     @classmethod
-    def create_link(cls, video: Video, link: str) -> None:
-        link_obj = Link(video=video, link=link)
-        key = cls.process_video(link)
+    def create_link(cls, video: Video, link_data: Dict) -> None:
+        """creat Link instance
+        :param video:               Video instance
+        :param link_data:           "link" data from all-locations-v2.json instance
+        :return:                    nothing
+        """
+        link_obj = Link(
+            video=video,
+            link=link_data.get("url"),
+            text=link_data.get("text", None) or None,
+        )
+        key = cls.process_video(link_obj.link)
 
         if key:
             link_obj.key = key
@@ -57,7 +66,7 @@ class LinkService(object):
         link_obj.save()
 
     @classmethod
-    def create_links(cls, video: Video, links: List[str]) -> None:
+    def create_links(cls, video: Video, links: List[Dict]) -> None:
         """Create a new Link objects
 
         :param video:
@@ -65,11 +74,13 @@ class LinkService(object):
         :return:
         """
         existing_links = [l.link for l in Link.objects()]  # noqa
-        for link_str in links:
-            if link_str in existing_links:
-                cls.update_link_key(link_str)
-                continue
-            cls.create_link(video, link_str)
+        for link_data in links:
+            link_url = link_data.get("url", None) or None
+            if link_url:
+                if link_url in existing_links:
+                    cls.update_link_key(link_data)
+                    continue
+                cls.create_link(video, link_data)
 
     @staticmethod
     def create_response_list(video: Video) -> List[Dict]:
@@ -79,7 +90,12 @@ class LinkService(object):
         :return:                list of serialized data
         """
         data = [
-            {"key": link.key, "link": link.link, "spaces_url": link.get_url(),}
+            {
+                "key": link.key,
+                "link": link.link,
+                "text": link.text,
+                "spaces_url": link.get_url(),
+            }
             for link in Link.objects(video=video)
         ]
 
