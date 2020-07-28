@@ -100,3 +100,10 @@ class LinkService(object):
         ]
 
         return data
+
+    @staticmethod
+    def list_links() -> List[Link]:
+        """
+        :return:            list of Links
+        """
+        return Link.objects()

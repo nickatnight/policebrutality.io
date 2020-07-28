@@ -34,6 +34,7 @@ class BaseTestCase(testing.TestCase):
                 "date": "2020-06-01",
                 "date_text": "June 1st",
                 "id": "ar-bentonville-1",
+                "description": "Danger",
                 "tags": ["arrest", "pepper-spray", "spray"],
             },
             {
@@ -54,6 +55,7 @@ class BaseTestCase(testing.TestCase):
                 "date": "2020-05-31",
                 "date_text": "May 31st",
                 "id": "ar-littlerock-1",
+                "description": "Ranger",
                 "tags": ["tackle", "strike", "knee", "spray",],
             },
         ],

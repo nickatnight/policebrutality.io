@@ -43,7 +43,6 @@ class APITestCase(BaseTestCase):
         )
         response = self.simulate_get(f"/{VERSION}/videos")
         self.assertEqual(response.status, falcon.HTTP_OK)
-        print(response.json)
         self.assertEqual(
             response.json,
             {
