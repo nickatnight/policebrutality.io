@@ -8,6 +8,7 @@ from src.utils.s3 import tmp_folder_clean_up
 
 # Consts
 BULK_API_DATA = "https://raw.githubusercontent.com/2020PB/police-brutality/data_build/all-locations.json"  # noqa
+BULK_API_DATA_V2 = "https://raw.githubusercontent.com/2020PB/police-brutality/data_build/all-locations-v2.json"  # noqa
 
 
 class GitHubAPI(RequestAPI):
@@ -23,7 +24,7 @@ class GitHubAPI(RequestAPI):
         :return:                dict
         """
         r_json = dict()
-        req = self.request(BULK_API_DATA)
+        req = self.request(BULK_API_DATA_V2)
 
         if req:
             r_json = req.json()

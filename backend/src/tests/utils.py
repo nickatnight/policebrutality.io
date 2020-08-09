@@ -14,9 +14,18 @@ class BaseTestCase(testing.TestCase):
         "data": [
             {
                 "links": [
-                    "https://twitter.com/courtenay_roche/status/1267653137969623040",
-                    "https://twitter.com/yagirlbrookie09/status/1267647898365427714",
-                    "https://www.4029tv.com/article/bentonville-police-deploy-tear-gas-on-protesters/32736629#",  # noqa
+                    {
+                        "url": "https://twitter.com/courtenay_roche/status/1267653137969623040",
+                        "text": "",
+                    },
+                    {
+                        "url": "https://twitter.com/yagirlbrookie09/status/1267647898365427714",
+                        "text": "",
+                    },
+                    {
+                        "url": "https://www.4029tv.com/article/bentonville-police-deploy-tear-gas-on-protesters/32736629#",  # noqa
+                        "text": "",
+                    },
                 ],
                 "state": "Arkansas",
                 "edit_at": "https://github.com/2020PB/police-brutality/blob/master/reports/Arkansas.md",  # noqa
@@ -25,11 +34,19 @@ class BaseTestCase(testing.TestCase):
                 "date": "2020-06-01",
                 "date_text": "June 1st",
                 "id": "ar-bentonville-1",
+                "description": "Danger",
+                "tags": ["arrest", "pepper-spray", "spray"],
             },
             {
                 "links": [
-                    "https://twitter.com/KATVShelby/status/1267554421019475972",
-                    "https://twitter.com/KATVNews/status/1267509911954440194",
+                    {
+                        "url": "https://twitter.com/KATVShelby/status/1267554421019475972",
+                        "text": "",
+                    },
+                    {
+                        "url": "https://twitter.com/KATVNews/status/1267509911954440194",
+                        "text": "",
+                    },
                 ],
                 "state": "Arkansas",
                 "edit_at": "https://github.com/2020PB/police-brutality/blob/master/reports/Arkansas.md",  # noqa
@@ -38,6 +55,8 @@ class BaseTestCase(testing.TestCase):
                 "date": "2020-05-31",
                 "date_text": "May 31st",
                 "id": "ar-littlerock-1",
+                "description": "Ranger",
+                "tags": ["tackle", "strike", "knee", "spray",],
             },
         ],
     }
