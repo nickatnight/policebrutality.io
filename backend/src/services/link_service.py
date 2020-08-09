@@ -17,30 +17,37 @@ class LinkService(object):
     # TODO: add collections update
 
     @classmethod
-    def process_video(cls, link: str) -> str:
-        file_name = download_video(link)
+    def process_video(cls, link_obj: Link) -> str:
+        """download/process video
+        :param link:                url to video (or lack thereof)
+        :return:                    unique key for video
+        """
+        file_name = download_video(link_obj.link)
         empty_key = ""
 
         if file_name:
+            key = link_obj.video.generate_string_for_subfolders()
             # save videos to filesystem for local dev
             if not settings.IS_DEV:
-                upload_to_spaces(file_name)
+                upload_to_spaces(key, file_name)
+
+            file_name = key + file_name
 
         return file_name or empty_key
 
     @classmethod
     def update_link_key(cls, link: Dict) -> None:
-        """udpdate Link.key if missing
+        """update Link.key if missing
 
         :param video:
         :param link:
         :return:            nothing
         """
-        link_obj = Link.objects.get(link=link.get("url"))
+        link_obj = Link.objects(link=link.get("url")).first()
 
         # TODO: add check for supported sites to avoid wasted calls
         if not link_obj.key:
-            key = cls.process_video(link_obj.link)
+            key = cls.process_video(link_obj)
 
             if key:
                 link_obj.key = key
@@ -58,7 +65,7 @@ class LinkService(object):
             link=link_data.get("url"),
             text=link_data.get("text", None) or None,
         )
-        key = cls.process_video(link_obj.link)
+        key = cls.process_video(link_obj)
 
         if key:
             link_obj.key = key

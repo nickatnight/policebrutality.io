@@ -45,7 +45,7 @@ def download_video(url: str) -> Union[None, str]:
     return video_title
 
 
-def upload_to_spaces(file_name: str) -> None:
+def upload_to_spaces(key: str, file_name: str) -> None:
     """upload video file to spaces
 
     :param file_name:           file name used for key
@@ -78,7 +78,7 @@ def upload_to_spaces(file_name: str) -> None:
     except ClientError:
         client.upload_file(
             Bucket=settings.SPACES_BUCKET_NAME,
-            Key=file_name,
+            Key=key + file_name,
             Filename=f"{settings.UPLOAD_PATH}{file_name}",
             ExtraArgs={"ACL": "public-read"},
         )

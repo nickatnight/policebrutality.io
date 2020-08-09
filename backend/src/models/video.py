@@ -13,3 +13,12 @@ class Video(Document):
     city = StringField(max_length=200, required=False)
     description = StringField(required=False)
     tags = ListField(ReferenceField(Tag))
+
+    def generate_string_for_subfolders(self):
+        if self.state and self.city:
+            sub = f"{self.state}/{self.city}/"
+        elif self.state and "unknown" not in self.state.lower():
+            sub = f"{self.state}/unknown/"
+        else:
+            sub = "unknown/"
+        return sub.lower()

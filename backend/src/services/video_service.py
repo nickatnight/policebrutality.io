@@ -75,7 +75,7 @@ class VideoService(object):
         existing_video_links = [l.link for l in Link.objects(video=video)]  # noqa
 
         for link in incoming_links:
-            if link in existing_video_links:
+            if link.get("url") in existing_video_links:
                 LinkService.update_link_key(link)
             else:
                 LinkService.create_link(video, link)
