@@ -17,7 +17,7 @@ a REST api...that's all. All data generated from [here](https://github.com/2020P
 
 ## Usage
 ```
-> curl -XGET http://api.policebrutality.io/v1/videos
+> curl -XGET http://api.policebrutality.io/v2/videos
 {
     "count": 846,
     "data": [
@@ -29,15 +29,18 @@ a REST api...that's all. All data generated from [here](https://github.com/2020P
             "name": "Law enforcement gas a crowd chanting “we want peace” right after exiting the building.",
             "state": "Arkansas",
             "city": "Bentonville",
+            "description": "Some crazy description",
             "links": [
                 {
                     "key": "1267653137969623040.mp4",
                     "link": "https://twitter.com/courtenay_roche/status/1267653137969623040",
-                    "spaces_url": "https://prod-uploads-policebrutality.sfo2.digitaloceanspaces.com/1267653137969623040.mp4"
+                    "spaces_url": "https://prod-uploads-policebrutality.sfo2.digitaloceanspaces.com/1267653137969623040.mp4",
+                    "text": "Unique New York"
                 }, {
                     "key": "1267647898365427714.mp4",
                     "link": "https://twitter.com/yagirlbrookie09/status/1267647898365427714",
-                    "spaces_url": "https://prod-uploads-policebrutality.sfo2.digitaloceanspaces.com/1267647898365427714.mp4"
+                    "spaces_url": "https://prod-uploads-policebrutality.sfo2.digitaloceanspaces.com/1267647898365427714.mp4",
+                    "text": null
                 },
             ],
         },
@@ -46,7 +49,7 @@ a REST api...that's all. All data generated from [here](https://github.com/2020P
 }
 ```
 
-## Deployments
+## Deployments (DigitalOcean)
 - deployments are triggered via GitHub actions
 - steps are: test/lint, build, deploy
 - any merge to develop/master will deploy to staging/prod, respectively
@@ -54,11 +57,13 @@ a REST api...that's all. All data generated from [here](https://github.com/2020P
 ## Development
 1. create a `.env` file at the root dir: `mv .env_example .env`
 2. `docker-compose up`
-3. visit `localhost/v1/videos` in browser
+3. visit `localhost/v2/videos` in browser
 4. to generate data, hop into the `backend` shell and run `GitHubAPI()`
     ```
     > docker-compose exec backend bash
     > python
+    > from src.app import run
+    > run()
     > from src.utils.github import GitHubAPI
     > GitHubAPI().main()
     ```
@@ -67,7 +72,7 @@ a REST api...that's all. All data generated from [here](https://github.com/2020P
 - add better filtering
 - geo coding
 - cron tasks for update
-- add tests
+- add tests :white_check_mark:
 
 ## Acknowledgements
 - Everyone on the intrawebs submitting there time and videos to the [repo](https://github.com/2020PB/police-brutality)/reddit

@@ -11,6 +11,7 @@ settings = importlib.import_module("src.settings.{}".format(os.getenv("ENV", "de
 
 class Link(Document):
     video = ReferenceField(Video)
+    text = StringField(max_length=255, required=False, unique=False)
     link = StringField(max_length=255, required=True, unique=False)
     key = StringField(max_length=255, required=False, unique=False)
 
