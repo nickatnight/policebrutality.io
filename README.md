@@ -1,3 +1,5 @@
+NOTE: this API is shutdown as of 11/01/2020
+
 # :rotating_light: policebrutality.io
 
 <p align="center">
